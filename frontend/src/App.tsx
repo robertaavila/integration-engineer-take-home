@@ -86,7 +86,7 @@ function App() {
       </div>
       <ul>
         {tasks.map((task) => (
-          <li key={task.id} className="flex">
+          <li key={task.id} className="task-list">
             <div>
               <h3>{task.title}</h3>
               <p>{task.description}</p>

@@ -14,6 +14,7 @@
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
+  animation: logo-spin 2s ease-out forwards;
 }
 
 .logo:hover {
@@ -69,6 +70,12 @@ input {
 .create-button {
   background-color: #9f72ed;
   color: #FFF;
+}
+
+.task-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 @media (prefers-reduced-motion: no-preference) {
