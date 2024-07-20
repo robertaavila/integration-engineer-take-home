@@ -17,13 +17,9 @@ function App() {
   }, []);
 
   const fetchTasks = async () => {
-    try {
-      const response = await fetch("http://localhost:8000/tasks");
-      const tasks = await response.json();
-      setTasks(tasks);
-    } catch (error) {
-      console.error("Failed to fetch tasks:", error);
-    }
+    const response = await fetch("http://localhost:8000/tasks");
+    const tasks = await response.json();
+    setTasks(tasks);
   };
 
   const createTask = async () => {
@@ -34,40 +30,36 @@ function App() {
       return;
     }
 
-    try {
-      const response = await fetch("http://localhost:8000/tasks", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title, description }),
-      });
+    const response = await fetch("http://localhost:8000/tasks", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title, description }),
+    });
 
-      if (response.ok) {
-        const newTask = await response.json();
-        setTasks([...tasks, newTask]);
-        setFormData({ title: "", description: "" });
-      } else {
-        alert("Failed to create task.");
-      }
-    } catch (error) {
-      console.error("Failed to create task:", error);
+    if (response.ok) {
+      const newTask = await response.json();
+      setTasks([...tasks, newTask]);
+      setFormData({ title: "", description: "" });
+    } else {
+      alert("Failed to create task.");
     }
   };
 
   const deleteTask = async (id: number) => {
-    try {
-      const response = await fetch(`http://localhost:8000/tasks/${id}`, {
-        method: "DELETE",
-      });
+    const response = await fetch(`http://localhost:8000/tasks/${id}`, {
+      method: "DELETE",
+    });
 
-      if (response.ok) {
-        setTasks(tasks.filter((task) => task.id !== id));
-      } else {
-        alert("Failed to delete task.");
+    if (response.ok) {
+      setTasks(tasks.filter((task) => task.id !== id));
+      if (editTaskId === id) {
+        setFormData({ title: "", description: "" });
+        setEditTaskId(null);
       }
-    } catch (error) {
-      console.error("Failed to delete task:", error);
+    } else {
+      alert("Failed to delete task.");
     }
   };
 
@@ -81,27 +73,23 @@ function App() {
       return;
     }
 
-    try {
-      const response = await fetch(`http://localhost:8000/tasks/${editTaskId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title, description }),
-      });
+    const response = await fetch(`http://localhost:8000/tasks/${editTaskId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title, description }),
+    });
 
-      if (response.ok) {
-        const updatedTask = await response.json();
-        setTasks(
-          tasks.map((task) => (task.id === editTaskId ? updatedTask : task))
-        );
-        setEditTaskId(null);
-        setFormData({ title: "", description: "" });
-      } else {
-        alert("Failed to update task.");
-      }
-    } catch (error) {
-      console.error("Failed to update task:", error);
+    if (response.ok) {
+      const updatedTask = await response.json();
+      setTasks(
+        tasks.map((task) => (task.id === editTaskId ? updatedTask : task))
+      );
+      setEditTaskId(null);
+      setFormData({ title: "", description: "" });
+    } else {
+      alert("Failed to update task.");
     }
   };
 
@@ -134,7 +122,10 @@ function App() {
             }
           />
         </div>
-        <button className="create-button" onClick={editTaskId ? updateTask : createTask}>
+        <button
+          className="create-button"
+          onClick={editTaskId ? updateTask : createTask}
+        >
           {editTaskId ? "Update" : "Create"}
         </button>
       </div>
