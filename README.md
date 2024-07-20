@@ -51,55 +51,58 @@ The Duda Solutions Engineering Team
 
 ## Add any instructions to get your submission running below this line.
 
-#Task Management App
+# Task Management App
 
-##Overview
+## Overview
+
 This task management application allows users to create, update, and delete tasks with an urgency level. The app features a responsive design to ensure usability on both desktop and mobile devices.
 
-Front-End
-*The front-end is built with React and styled using CSS.
+## Front-End
 
-Running the Front-End
-*Clone the Repository
+The front-end is built with React and styled using CSS.
+
+### Running the Front-End
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+
+2. **Install Dependencies and Run **
+
+   ```bash
+    npm install
+    npm run dev
+
+*Key Features*
+
+* Task Management: Create, edit, and delete tasks.
+* Responsive Design: Adapts to different screen sizes with improved mobile UI.
+* Urgency Levels: Assign and display urgency levels (1-5) with corresponding icons.
+* Sorting: Added buttons to sort tasks by urgency level in ascending and descending order.
+* Error Display: Replaced alerts with inline error messages below the input fields.
+
+## Back-End
+
+The back-end is built with Express.js.
+
+### Running the Back-End
 Navigate to the Back-End Directory
+   
+   cd <repository-directory>
+    npm install
+    npm start
+    The server will be available at http://localhost:8000.
 
-bash
-git clone <repository-url>
-cd <repository-directory>
-Install Dependencies and Run 
+## API Endpoints
 
-bash
-npm install
-npm run dev
+* GET /tasks: Retrieve all tasks.
+* POST /tasks: Create a new task with title, description, and urgency level.
+* DELETE /tasks/:id: Delete a task by its ID.
+* PUT /tasks/:id: Update a task by its ID.
 
-Key Features
-*Task Management: Create, edit, and delete tasks.
-*Urgency Levels: Assign and display urgency levels (1-5) with corresponding icons.
-*Responsive Design: Adapts to different screen sizes with improved mobile UI.
-
-Recent Alterations
-*Added Urgency Level: Tasks now include an urgencyLevel property, which is a number between 1 and 5.
-*Mobile UI Improvements: Adjustments were made for better readability and usability on small screens, including full-width inputs and better button sizes.
-*Sorting: Added buttons to sort tasks by urgency level in ascending and descending order.
-*Error Display: Replaced alerts with inline error messages below the input fields.
-
-Back-End
-*The back-end is built with Express.js.
-
-Running the Back-End
-Navigate to the Back-End Directory
-
-npm install
-npm start
-The server will be available at http://localhost:8000.
-
-API Endpoints
-GET /tasks: Retrieve all tasks.
-POST /tasks: Create a new task with title, description, and urgency level.
-DELETE /tasks/:id: Delete a task by its ID.
-PUT /tasks/:id: Update a task by its ID.
-
-Conclusion
+## Conclusion
 The application provides a simple interface for managing tasks with urgency levels and is designed to be responsive and user-friendly across different devices.
 
 Thanks for the opportunity!
