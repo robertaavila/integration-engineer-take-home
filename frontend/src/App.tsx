@@ -60,19 +60,10 @@ function App() {
 
   return (
     <div className="app">
-      <header className="app-header">
-        <img src="/logo.png" alt="Logo" className="app-logo" />
+      <header className="flex">
         <h1>Task Management App</h1>
+        <img src="/vite.svg" alt="Logo" className="logo" />
       </header>
-      <ul>
-        {tasks.map(task => (
-          <li key={task.id}>
-            <h3>{task.title}</h3>
-            <p>{task.description}</p>
-            <button onClick={() => deleteTask(task.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
       <div>
         <h2>Create Task</h2>
         <input
@@ -89,6 +80,18 @@ function App() {
         />
         <button onClick={createTask}>Create</button>
       </div>
+      <ul>
+        {tasks.map(task => (
+          <li key={task.id} className="flex">
+            <div>
+            <h3>{task.title}</h3>
+            <p>{task.description}</p>
+            </div>
+          
+            <button onClick={() => deleteTask(task.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
