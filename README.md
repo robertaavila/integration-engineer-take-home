@@ -57,30 +57,41 @@ The Duda Solutions Engineering Team
 
 This task management application allows users to create, update, and delete tasks with an urgency level. The app features a responsive design to ensure usability on both desktop and mobile devices.
 
+
 ## Front-End
 
 The front-end is built with React and styled using CSS.
-
+  
 ### Running the Front-End
 
-1. **Clone the Repository**
+1.  **Clone the Repository**
 
-   ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+```bash
+
+git clone <repository-url>
+
+cd <repository-directory>
+```
 
 2.  **Install Dependencies and Run**
 
-   ```bash
-    npm install
-    npm run dev
+```bash
 
-### Key Features
+npm install
+
+npm run dev
+```
+
+3. **Key Features**
 
 * Task Management: Create, edit, and delete tasks.
+
 * Responsive Design: Adapts to different screen sizes with improved mobile UI.
+
 * Urgency Levels: Assign and display urgency levels (1-5) with corresponding icons.
+
 * Sorting: Added buttons to sort tasks by urgency level in ascending and descending order.
+
 * Error Display: Replaced alerts with inline error messages below the input fields.
 
 ## Back-End
@@ -88,21 +99,31 @@ The front-end is built with React and styled using CSS.
 The back-end is built with Express.js.
 
 ### Running the Back-End
+
 Navigate to the Back-End Directory
-   
-   cd <repository-directory>
-    npm install
-    npm start
-    The server will be available at http://localhost:8000.
+```bash
+
+cd <repository-directory>
+
+npm install
+
+npm start
+```
+
+The server will be available at http://localhost:8000.
 
 ## API Endpoints
 
 * GET /tasks: Retrieve all tasks.
+
 * POST /tasks: Create a new task with title, description, and urgency level.
+
 * DELETE /tasks/:id: Delete a task by its ID.
+
 * PUT /tasks/:id: Update a task by its ID.
 
 ## Conclusion
+
 The application provides a simple interface for managing tasks with urgency levels and is designed to be responsive and user-friendly across different devices.
 
 Thanks for the opportunity!
