@@ -48,18 +48,15 @@ li {
 }
 
 input {
-  margin: 5px;
-  padding: 10px;
+  margin: 0 5px;
+  height: 30px;
   border-radius: 10px;
   border: 1px solid #888;
 }
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.inputs {
+  display: flex;
+  justify-content: center;
 }
 
 .delete-button {
@@ -70,6 +67,10 @@ input {
 .create-button {
   background-color: #9f72ed;
   color: #FFF;
+}
+
+button {
+  margin: 20px;
 }
 
 .task-list {

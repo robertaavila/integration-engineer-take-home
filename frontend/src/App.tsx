@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./App.css"; // Ensure you have a CSS file for styling
+import "./App.css";
 
 type Task = {
   id: number;
@@ -10,6 +10,7 @@ type Task = {
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [formData, setFormData] = useState({ title: "", description: "" });
+  const [editTaskId, setEditTaskId] = useState<number | null>(null);
 
   useEffect(() => {
     fetchTasks();
@@ -58,6 +59,41 @@ function App() {
     }
   };
 
+  const updateTask = async () => {
+    if (editTaskId === null) return;
+
+    const { title, description } = formData;
+
+    if (!title || !description) {
+      alert("Title and description are required.");
+      return;
+    }
+
+    const response = await fetch(`http://localhost:8000/tasks/${editTaskId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title, description }),
+    });
+
+    if (response.ok) {
+      const updatedTask = await response.json();
+      setTasks(
+        tasks.map((task) => (task.id === editTaskId ? updatedTask : task))
+      );
+      setEditTaskId(null);
+      setFormData({ title: "", description: "" });
+    } else {
+      alert("Failed to update task.");
+    }
+  };
+
+  const handleEdit = (task: Task) => {
+    setEditTaskId(task.id);
+    setFormData({ title: task.title, description: task.description });
+  };
+
   return (
     <div className="app">
       <header className="flex">
@@ -65,7 +101,8 @@ function App() {
         <img src="/vite.svg" alt="Logo" className="logo" />
       </header>
       <div>
-        <h2>Create Task</h2>
+      <h2>Create Task</h2>
+        <div className="inputs">
         <input
           type="text"
           placeholder="Title"
@@ -80,6 +117,7 @@ function App() {
             setFormData({ ...formData, description: e.target.value })
           }
         />
+        </div>
         <button className="create-button" onClick={createTask}>
           Create
         </button>
@@ -91,13 +129,15 @@ function App() {
               <h3>{task.title}</h3>
               <p>{task.description}</p>
             </div>
-
-            <button
-              className="delete-button"
-              onClick={() => deleteTask(task.id)}
-            >
-              Delete
-            </button>
+            <div>
+              <button onClick={() => handleEdit(task)}>Edit</button>
+              <button
+                className="delete-button"
+                onClick={() => deleteTask(task.id)}
+              >
+                Delete
+              </button>
+            </div>
           </li>
         ))}
       </ul>
