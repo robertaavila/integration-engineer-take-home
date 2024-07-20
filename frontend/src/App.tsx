@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import './App.css'; // Ensure you have a CSS file for styling
 
 type Task = {
   id: number,
@@ -15,22 +16,54 @@ function App() {
   }, []);
 
   const fetchTasks = async () => {
-    const response = await fetch('http://localhost:8000/tasks')
+    const response = await fetch('http://localhost:8000/tasks');
     const tasks = await response.json();
     setTasks(tasks);
   };
 
-  /* Complete the following functions to hit endpoints on your server */
   const createTask = async () => {
+    const { title, description } = formData;
+
+    if (!title || !description) {
+      alert('Title and description are required.');
+      return;
+    }
+
+    const response = await fetch('http://localhost:8000/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title, description }),
+    });
+
+    if (response.ok) {
+      const newTask = await response.json();
+      setTasks([...tasks, newTask]);
+      setFormData({ title: '', description: '' });
+    } else {
+      alert('Failed to create task.');
+    }
   };
 
-  const deleteTask = async (id: string) => {
-  };
+  const deleteTask = async (id: number) => {
+    const response = await fetch(`http://localhost:8000/tasks/${id}`, {
+      method: 'DELETE',
+    });
 
+    if (response.ok) {
+      setTasks(tasks.filter(task => task.id !== id));
+    } else {
+      alert('Failed to delete task.');
+    }
+  };
 
   return (
-    <div>
-      <h1>Task Management App</h1>
+    <div className="app">
+      <header className="app-header">
+        <img src="/logo.png" alt="Logo" className="app-logo" />
+        <h1>Task Management App</h1>
+      </header>
       <ul>
         {tasks.map(task => (
           <li key={task.id}>
