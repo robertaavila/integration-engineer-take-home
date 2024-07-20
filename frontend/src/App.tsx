@@ -189,10 +189,7 @@ function App() {
             </div>
             <div>
               <button className="edit-button" onClick={() => handleEdit(task)}>Edit</button>
-              <button
-                className="delete-button"
-                onClick={() => deleteTask(task.id)}
-              >
+              <button className="delete-button" onClick={() => deleteTask(task.id)}>
                 Delete
               </button>
             </div>
