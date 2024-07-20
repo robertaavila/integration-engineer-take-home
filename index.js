@@ -35,8 +35,8 @@ app.post("/tasks", (req, res) => {
 });
 
 app.delete("/tasks/:id", (req, res) => {
-  const { id } = req.params;
-  const taskIndex = tasks.findIndex((task) => task.id === parseInt(id, 10));
+  const id = parseInt(req.params.id, 10);
+  const taskIndex = tasks.findIndex((task) => task.id === id);
 
   if (taskIndex === -1) {
     return res.status(404).json({ error: "Task not found." });
@@ -51,9 +51,7 @@ app.put("/tasks/:id", (req, res) => {
   const { title, description } = req.body;
 
   if (!title || !description) {
-    return res
-      .status(400)
-      .json({ error: "Title and description are required." });
+    return res.status(400).json({ error: "Title and description are required." });
   }
 
   const taskIndex = tasks.findIndex((task) => task.id === id);

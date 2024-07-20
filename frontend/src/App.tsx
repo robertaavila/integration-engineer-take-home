@@ -17,9 +17,13 @@ function App() {
   }, []);
 
   const fetchTasks = async () => {
-    const response = await fetch("http://localhost:8000/tasks");
-    const tasks = await response.json();
-    setTasks(tasks);
+    try {
+      const response = await fetch("http://localhost:8000/tasks");
+      const tasks = await response.json();
+      setTasks(tasks);
+    } catch (error) {
+      console.error("Failed to fetch tasks:", error);
+    }
   };
 
   const createTask = async () => {
@@ -30,32 +34,40 @@ function App() {
       return;
     }
 
-    const response = await fetch("http://localhost:8000/tasks", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ title, description }),
-    });
+    try {
+      const response = await fetch("http://localhost:8000/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, description }),
+      });
 
-    if (response.ok) {
-      const newTask = await response.json();
-      setTasks([...tasks, newTask]);
-      setFormData({ title: "", description: "" });
-    } else {
-      alert("Failed to create task.");
+      if (response.ok) {
+        const newTask = await response.json();
+        setTasks([...tasks, newTask]);
+        setFormData({ title: "", description: "" });
+      } else {
+        alert("Failed to create task.");
+      }
+    } catch (error) {
+      console.error("Failed to create task:", error);
     }
   };
 
   const deleteTask = async (id: number) => {
-    const response = await fetch(`http://localhost:8000/tasks/${id}`, {
-      method: "DELETE",
-    });
+    try {
+      const response = await fetch(`http://localhost:8000/tasks/${id}`, {
+        method: "DELETE",
+      });
 
-    if (response.ok) {
-      setTasks(tasks.filter((task) => task.id !== id));
-    } else {
-      alert("Failed to delete task.");
+      if (response.ok) {
+        setTasks(tasks.filter((task) => task.id !== id));
+      } else {
+        alert("Failed to delete task.");
+      }
+    } catch (error) {
+      console.error("Failed to delete task:", error);
     }
   };
 
@@ -69,23 +81,27 @@ function App() {
       return;
     }
 
-    const response = await fetch(`http://localhost:8000/tasks/${editTaskId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ title, description }),
-    });
+    try {
+      const response = await fetch(`http://localhost:8000/tasks/${editTaskId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, description }),
+      });
 
-    if (response.ok) {
-      const updatedTask = await response.json();
-      setTasks(
-        tasks.map((task) => (task.id === editTaskId ? updatedTask : task))
-      );
-      setEditTaskId(null);
-      setFormData({ title: "", description: "" });
-    } else {
-      alert("Failed to update task.");
+      if (response.ok) {
+        const updatedTask = await response.json();
+        setTasks(
+          tasks.map((task) => (task.id === editTaskId ? updatedTask : task))
+        );
+        setEditTaskId(null);
+        setFormData({ title: "", description: "" });
+      } else {
+        alert("Failed to update task.");
+      }
+    } catch (error) {
+      console.error("Failed to update task:", error);
     }
   };
 
@@ -101,25 +117,25 @@ function App() {
         <img src="/vite.svg" alt="Logo" className="logo" />
       </header>
       <div>
-      <h2>Create Task</h2>
+        <h2>{editTaskId ? "Update Task" : "Create Task"}</h2>
         <div className="inputs">
-        <input
-          type="text"
-          placeholder="Title"
-          value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Description"
-          value={formData.description}
-          onChange={(e) =>
-            setFormData({ ...formData, description: e.target.value })
-          }
-        />
+          <input
+            type="text"
+            placeholder="Title"
+            value={formData.title}
+            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="Description"
+            value={formData.description}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
+          />
         </div>
-        <button className="create-button" onClick={createTask}>
-          Create
+        <button className="create-button" onClick={editTaskId ? updateTask : createTask}>
+          {editTaskId ? "Update" : "Create"}
         </button>
       </div>
       <ul>
