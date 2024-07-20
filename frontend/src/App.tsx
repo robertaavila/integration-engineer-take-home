@@ -176,7 +176,7 @@ function App() {
         </button>
       </div>
       <div className="sorting-buttons">
-        Order by: 
+        <span>Order by:</span> 
         <button onClick={sortByMostUrgent}>Most urgent</button>
         <button onClick={sortByLeastUrgent}>Least urgent</button>
       </div>

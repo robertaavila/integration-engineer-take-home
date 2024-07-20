@@ -124,6 +124,7 @@ button {
 
 .error-message {
   color: #fa4e4e;
+  margin-top: 10px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -133,8 +134,39 @@ button {
 }
 
 @media screen and (max-width: 600px) {
+
   .flex {
     flex-direction: column;
-  }  
+  }
+
+  img {
+    display: none;
+  }
+
+  input {
+    width: 100vw;
+  }
+
+  .inputs {
+    display: block;
+  }
+
+  .input-group {
+    width: 100%;
+    text-align: center;
+  }
+
+  button {
+    margin: 10px 10px 10px 0;
+  }
+
+  .task-list {
+    display: grid;
+    justify-content: center;
+  }
+
+  .sorting-buttons span {
+    display: none;
+  }
 }
 
