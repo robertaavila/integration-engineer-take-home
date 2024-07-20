@@ -42,7 +42,6 @@ function App() {
       alert("Failed to create task.");
     }
   };
-  
 
   const deleteTask = async (id: number) => {
     const response = await fetch(`http://localhost:8000/tasks/${id}`, {
@@ -96,8 +95,13 @@ function App() {
   };
 
   const urgencyLevelIcon = (urgencyLevel: number) => {
-    const circles = Array(urgencyLevel).fill("⚫").join(" ");
-    return circles || "⚪"; 
+    return (
+      <span className="urgency-icons">
+        {Array.from({ length: urgencyLevel }, (_, index) => (
+          <span key={index} className="circle"></span>
+        ))}
+      </span>
+    );
   };
 
   return (
@@ -109,30 +113,39 @@ function App() {
       <div>
         <h2>{editTaskId ? "Update Task" : "Create Task"}</h2>
         <div className="inputs">
-          <input
-            type="text"
-            placeholder="Title"
-            value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          />
-          <input
-            type="text"
-            placeholder="Description"
-            value={formData.description}
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
-            }
-          />
-          <input
-            type="number"
-            min="1"
-            max="5"
-            placeholder="urgencyLevel (1-5)"
-            value={formData.urgencyLevel}
-            onChange={(e) =>
-              setFormData({ ...formData, urgencyLevel: parseInt(e.target.value, 10) })
-            }
-          />
+          <div className="input-group">
+            <label>Title</label>
+            <input
+              type="text"
+              placeholder="Title"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            />
+          </div>
+          <div className="input-group">
+            <label>Description</label>
+            <input
+              type="text"
+              placeholder="Description"
+              value={formData.description}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
+            />
+          </div>
+          <div className="input-group">
+            <label>Urgency Level (1-5)</label>
+            <input
+              type="number"
+              min="1"
+              max="5"
+              placeholder="Urgency Level (1-5)"
+              value={formData.urgencyLevel}
+              onChange={(e) =>
+                setFormData({ ...formData, urgencyLevel: parseInt(e.target.value, 10) })
+              }
+            />
+          </div>
         </div>
         <button
           className="create-button"
@@ -145,11 +158,11 @@ function App() {
         {tasks.map((task) => (
           <li key={task.id} className="task-list">
             <div>
-              <h3>{task.title} <span className="urgency-icons">{urgencyLevelIcon(task.urgencyLevel)}</span></h3>
+              <h3>{task.title} {urgencyLevelIcon(task.urgencyLevel)}</h3>
               <p>{task.description}</p>
             </div>
             <div>
-              <button onClick={() => handleEdit(task)}>Edit</button>
+              <button className="edit-button" onClick={() => handleEdit(task)}>Edit</button>
               <button
                 className="delete-button"
                 onClick={() => deleteTask(task.id)}

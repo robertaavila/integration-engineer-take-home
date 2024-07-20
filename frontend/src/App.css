@@ -59,18 +59,33 @@ input {
   justify-content: center;
 }
 
+.input-group {
+  margin: 10px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin: 5px 8px;
+}
+
 .delete-button {
   background-color: #f5bb1d;
   color: #FFF;
 }
 
 .create-button {
+  background-color: #747bff;
+  color: #FFF;
+}
+
+.edit-button {
   background-color: #9f72ed;
   color: #FFF;
 }
 
 button {
-  margin: 20px;
+  margin: 20px 10px;
 }
 
 .task-list {
@@ -95,32 +110,16 @@ button {
 }
 
  .urgency-icons {
-  font-size: 0.75em;
+  font-size: 0.5em;
   margin-left: 10px;
 }
 
-.task-list .urgency-icons span {
-  color: #ff0000; 
-}
-
-.task-list .urgency-icons span:nth-child(1) {
-  color: #ff0000; 
-}
-
-.task-list .urgency-icons span:nth-child(2) {
-  color: #ff5500; 
-}
-
-.task-list .urgency-icons span:nth-child(3) {
-  color: #ffaa00; 
-}
-
-.task-list .urgency-icons span:nth-child(4) {
-  color: #aaff00;
-}
-
-.task-list .urgency-icons span:nth-child(5) {
-  color: #00ff00; 
+.circle {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    background-color: #f5bb1d; 
 }
 
 
