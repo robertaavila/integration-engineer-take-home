@@ -1,22 +1,22 @@
-import { useState, useEffect } from 'react';
-import './App.css'; // Ensure you have a CSS file for styling
+import { useState, useEffect } from "react";
+import "./App.css"; // Ensure you have a CSS file for styling
 
 type Task = {
-  id: number,
-  title: string,
-  description: string
-}
+  id: number;
+  title: string;
+  description: string;
+};
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [formData, setFormData] = useState({ title: '', description: '' });
+  const [formData, setFormData] = useState({ title: "", description: "" });
 
   useEffect(() => {
     fetchTasks();
   }, []);
 
   const fetchTasks = async () => {
-    const response = await fetch('http://localhost:8000/tasks');
+    const response = await fetch("http://localhost:8000/tasks");
     const tasks = await response.json();
     setTasks(tasks);
   };
@@ -25,14 +25,14 @@ function App() {
     const { title, description } = formData;
 
     if (!title || !description) {
-      alert('Title and description are required.');
+      alert("Title and description are required.");
       return;
     }
 
-    const response = await fetch('http://localhost:8000/tasks', {
-      method: 'POST',
+    const response = await fetch("http://localhost:8000/tasks", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ title, description }),
     });
@@ -40,21 +40,21 @@ function App() {
     if (response.ok) {
       const newTask = await response.json();
       setTasks([...tasks, newTask]);
-      setFormData({ title: '', description: '' });
+      setFormData({ title: "", description: "" });
     } else {
-      alert('Failed to create task.');
+      alert("Failed to create task.");
     }
   };
 
   const deleteTask = async (id: number) => {
     const response = await fetch(`http://localhost:8000/tasks/${id}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
 
     if (response.ok) {
-      setTasks(tasks.filter(task => task.id !== id));
+      setTasks(tasks.filter((task) => task.id !== id));
     } else {
-      alert('Failed to delete task.');
+      alert("Failed to delete task.");
     }
   };
 
@@ -70,25 +70,34 @@ function App() {
           type="text"
           placeholder="Title"
           value={formData.title}
-          onChange={e => setFormData({ ...formData, title: e.target.value })}
+          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
         />
         <input
           type="text"
           placeholder="Description"
           value={formData.description}
-          onChange={e => setFormData({ ...formData, description: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, description: e.target.value })
+          }
         />
-        <button onClick={createTask}>Create</button>
+        <button className="create-button" onClick={createTask}>
+          Create
+        </button>
       </div>
       <ul>
-        {tasks.map(task => (
+        {tasks.map((task) => (
           <li key={task.id} className="flex">
             <div>
-            <h3>{task.title}</h3>
-            <p>{task.description}</p>
+              <h3>{task.title}</h3>
+              <p>{task.description}</p>
             </div>
-          
-            <button onClick={() => deleteTask(task.id)}>Delete</button>
+
+            <button
+              className="delete-button"
+              onClick={() => deleteTask(task.id)}
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>

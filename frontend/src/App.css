@@ -61,6 +61,16 @@ input {
   color: #888;
 }
 
+.delete-button {
+  background-color: #f5bb1d;
+  color: #FFF;
+}
+
+.create-button {
+  background-color: #9f72ed;
+  color: #FFF;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
