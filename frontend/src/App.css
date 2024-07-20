@@ -79,6 +79,51 @@ button {
   align-items: center;
 }
 
+.urgency-icons {
+  font-size: 1.5em;
+  display: flex;
+  align-items: center;
+}
+
+.urgency-icons span {
+  margin: 0 2px; 
+}
+
+.task-list h3 {
+  display: flex;
+  align-items: center;
+}
+
+ .urgency-icons {
+  font-size: 0.75em;
+  margin-left: 10px;
+}
+
+.task-list .urgency-icons span {
+  color: #ff0000; 
+}
+
+.task-list .urgency-icons span:nth-child(1) {
+  color: #ff0000; 
+}
+
+.task-list .urgency-icons span:nth-child(2) {
+  color: #ff5500; 
+}
+
+.task-list .urgency-icons span:nth-child(3) {
+  color: #ffaa00; 
+}
+
+.task-list .urgency-icons span:nth-child(4) {
+  color: #aaff00;
+}
+
+.task-list .urgency-icons span:nth-child(5) {
+  color: #00ff00; 
+}
+
+
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;

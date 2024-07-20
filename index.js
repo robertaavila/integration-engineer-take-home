@@ -16,18 +16,21 @@ app.get("/tasks", (req, res) => {
 });
 
 app.post("/tasks", (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, urgencyLevel } = req.body;
 
-  if (!title || !description) {
+  console.log("POST /tasks received:", req.body);
+
+  if (!title || !description || typeof urgencyLevel !== 'number' || urgencyLevel < 1 || urgencyLevel > 5) {
     return res
       .status(400)
-      .json({ error: "Title and description are required." });
+      .json({ error: "Title, description, and a valid urgencyLevel (1-5) are required." });
   }
 
   const newTask = {
     id: nextTaskId++,
     title,
     description,
+    urgencyLevel,  
   };
 
   tasks.push(newTask);
@@ -48,18 +51,16 @@ app.delete("/tasks/:id", (req, res) => {
 
 app.put("/tasks/:id", (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const { title, description } = req.body;
+  const { title, description, urgencyLevel } = req.body;
 
-  if (!title || !description) {
-    return res.status(400).json({ error: "Title and description are required." });
-  }
+  console.log("PUT /tasks/:id received:", req.body);
 
   const taskIndex = tasks.findIndex((task) => task.id === id);
   if (taskIndex === -1) {
     return res.status(404).json({ error: "Task not found." });
   }
 
-  tasks[taskIndex] = { id, title, description };
+  tasks[taskIndex] = { id, title, description, urgencyLevel }; 
   res.json(tasks[taskIndex]);
 });
 

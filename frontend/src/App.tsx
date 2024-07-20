@@ -5,11 +5,12 @@ type Task = {
   id: number;
   title: string;
   description: string;
+  urgencyLevel: number;
 };
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [formData, setFormData] = useState({ title: "", description: "" });
+  const [formData, setFormData] = useState({ title: "", description: "", urgencyLevel: 1 });
   const [editTaskId, setEditTaskId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -23,29 +24,25 @@ function App() {
   };
 
   const createTask = async () => {
-    const { title, description } = formData;
-
-    if (!title || !description) {
-      alert("Title and description are required.");
-      return;
-    }
-
+    const { title, description, urgencyLevel } = formData;
+  
     const response = await fetch("http://localhost:8000/tasks", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ title, description }),
+      body: JSON.stringify({ title, description, urgencyLevel }),
     });
-
+  
     if (response.ok) {
       const newTask = await response.json();
       setTasks([...tasks, newTask]);
-      setFormData({ title: "", description: "" });
+      setFormData({ title: "", description: "", urgencyLevel: 1 });
     } else {
       alert("Failed to create task.");
     }
   };
+  
 
   const deleteTask = async (id: number) => {
     const response = await fetch(`http://localhost:8000/tasks/${id}`, {
@@ -55,7 +52,7 @@ function App() {
     if (response.ok) {
       setTasks(tasks.filter((task) => task.id !== id));
       if (editTaskId === id) {
-        setFormData({ title: "", description: "" });
+        setFormData({ title: "", description: "", urgencyLevel: 1 });
         setEditTaskId(null);
       }
     } else {
@@ -66,10 +63,10 @@ function App() {
   const updateTask = async () => {
     if (editTaskId === null) return;
 
-    const { title, description } = formData;
+    const { title, description, urgencyLevel } = formData;
 
-    if (!title || !description) {
-      alert("Title and description are required.");
+    if (!title || !description || urgencyLevel < 1 || urgencyLevel > 5) {
+      alert("All fields are required and urgencyLevel must be between 1 and 5.");
       return;
     }
 
@@ -78,7 +75,7 @@ function App() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ title, description }),
+      body: JSON.stringify({ title, description, urgencyLevel }),
     });
 
     if (response.ok) {
@@ -87,7 +84,7 @@ function App() {
         tasks.map((task) => (task.id === editTaskId ? updatedTask : task))
       );
       setEditTaskId(null);
-      setFormData({ title: "", description: "" });
+      setFormData({ title: "", description: "", urgencyLevel: 1 });
     } else {
       alert("Failed to update task.");
     }
@@ -95,7 +92,12 @@ function App() {
 
   const handleEdit = (task: Task) => {
     setEditTaskId(task.id);
-    setFormData({ title: task.title, description: task.description });
+    setFormData({ title: task.title, description: task.description, urgencyLevel: task.urgencyLevel });
+  };
+
+  const urgencyLevelIcon = (urgencyLevel: number) => {
+    const circles = Array(urgencyLevel).fill("⚫").join(" ");
+    return circles || "⚪"; 
   };
 
   return (
@@ -121,6 +123,16 @@ function App() {
               setFormData({ ...formData, description: e.target.value })
             }
           />
+          <input
+            type="number"
+            min="1"
+            max="5"
+            placeholder="urgencyLevel (1-5)"
+            value={formData.urgencyLevel}
+            onChange={(e) =>
+              setFormData({ ...formData, urgencyLevel: parseInt(e.target.value, 10) })
+            }
+          />
         </div>
         <button
           className="create-button"
@@ -133,7 +145,7 @@ function App() {
         {tasks.map((task) => (
           <li key={task.id} className="task-list">
             <div>
-              <h3>{task.title}</h3>
+              <h3>{task.title} <span className="urgency-icons">{urgencyLevelIcon(task.urgencyLevel)}</span></h3>
               <p>{task.description}</p>
             </div>
             <div>
