@@ -12,6 +12,7 @@ function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [formData, setFormData] = useState({ title: "", description: "", urgencyLevel: 1 });
   const [editTaskId, setEditTaskId] = useState<number | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     fetchTasks();
@@ -25,7 +26,12 @@ function App() {
 
   const createTask = async () => {
     const { title, description, urgencyLevel } = formData;
-  
+
+    if (!title || !description || urgencyLevel < 1 || urgencyLevel > 5) {
+      setErrorMessage("All fields are required and urgency level must be between 1 and 5.");
+      return;
+    }
+
     const response = await fetch("http://localhost:8000/tasks", {
       method: "POST",
       headers: {
@@ -33,13 +39,14 @@ function App() {
       },
       body: JSON.stringify({ title, description, urgencyLevel }),
     });
-  
+
     if (response.ok) {
       const newTask = await response.json();
       setTasks([...tasks, newTask]);
       setFormData({ title: "", description: "", urgencyLevel: 1 });
+      setErrorMessage(null);
     } else {
-      alert("Failed to create task.");
+      setErrorMessage("Failed to create task.");
     }
   };
 
@@ -54,8 +61,9 @@ function App() {
         setFormData({ title: "", description: "", urgencyLevel: 1 });
         setEditTaskId(null);
       }
+      setErrorMessage(null);
     } else {
-      alert("Failed to delete task.");
+      setErrorMessage("Failed to delete task.");
     }
   };
 
@@ -65,7 +73,7 @@ function App() {
     const { title, description, urgencyLevel } = formData;
 
     if (!title || !description || urgencyLevel < 1 || urgencyLevel > 5) {
-      alert("All fields are required and urgencyLevel must be between 1 and 5.");
+      setErrorMessage("All fields are required and urgency level must be between 1 and 5.");
       return;
     }
 
@@ -84,14 +92,16 @@ function App() {
       );
       setEditTaskId(null);
       setFormData({ title: "", description: "", urgencyLevel: 1 });
+      setErrorMessage(null);
     } else {
-      alert("Failed to update task.");
+      setErrorMessage("Failed to update task.");
     }
   };
 
   const handleEdit = (task: Task) => {
     setEditTaskId(task.id);
     setFormData({ title: task.title, description: task.description, urgencyLevel: task.urgencyLevel });
+    setErrorMessage(null);
   };
 
   const urgencyLevelIcon = (urgencyLevel: number) => {
@@ -102,6 +112,16 @@ function App() {
         ))}
       </span>
     );
+  };
+
+  const sortByMostUrgent = () => {
+    const sortedTasks = [...tasks].sort((a, b) => b.urgencyLevel - a.urgencyLevel);
+    setTasks(sortedTasks);
+  };
+
+  const sortByLeastUrgent = () => {
+    const sortedTasks = [...tasks].sort((a, b) => a.urgencyLevel - b.urgencyLevel);
+    setTasks(sortedTasks);
   };
 
   return (
@@ -147,12 +167,18 @@ function App() {
             />
           </div>
         </div>
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
         <button
           className="create-button"
           onClick={editTaskId ? updateTask : createTask}
         >
           {editTaskId ? "Update" : "Create"}
         </button>
+      </div>
+      <div className="sorting-buttons">
+        Order by: 
+        <button onClick={sortByMostUrgent}>Most urgent</button>
+        <button onClick={sortByLeastUrgent}>Least urgent</button>
       </div>
       <ul>
         {tasks.map((task) => (

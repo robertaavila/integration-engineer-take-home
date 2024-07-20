@@ -122,6 +122,9 @@ button {
     background-color: #f5bb1d; 
 }
 
+.error-message {
+  color: #fa4e4e;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
@@ -129,4 +132,9 @@ button {
   }
 }
 
+@media screen and (max-width: 600px) {
+  .flex {
+    flex-direction: column;
+  }  
+}
 
