@@ -69,13 +69,13 @@ The front-end is built with React and styled using CSS.
    git clone <repository-url>
    cd <repository-directory>
 
-2. **Install Dependencies and Run **
+2.  **Install Dependencies and Run**
 
    ```bash
     npm install
     npm run dev
 
-*Key Features*
+### Key Features
 
 * Task Management: Create, edit, and delete tasks.
 * Responsive Design: Adapts to different screen sizes with improved mobile UI.
